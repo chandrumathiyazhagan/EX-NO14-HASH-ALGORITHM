@@ -1,35 +1,81 @@
-# EX-NO14-HASH-ALGORITHM
+# Ex---14---HASH-ALGORITHM
 
-## AIM:
-To implement HASH ALGORITHM
+# AIM:
+To generate a simple hash of a given message using a custom hash function.
 
-## ALGORITHM:
+# DESIGN STEPS:
+STEP 1:
+Input a message from the user.
 
-1. Hash Algorithm is used to convert input data (message) into a fixed-size string, typically a hash value, which uniquely represents the original data.
+STEP 2:
+Use a basic custom hash function that applies simple operations like XOR and addition on the characters of the message.   
 
-2. Initialization:
-   - Choose a hash function \( H \) (e.g., SHA-256, MD5, etc.).
-   - The message \( M \) to be hashed is input.
+STEP 3:
+Convert the resulting hash into a hexadecimal format.
 
-3. Message Preprocessing:
-   - Break the message \( M \) into fixed-size blocks. If necessary, pad the message to make it compatible with the block size required by the hash function.
-   - For example, in SHA-256, the message is padded to ensure that its length is a multiple of 512 bits.
+STEP 4:
+Display the computed hash to the user.
 
-4. Hash Calculation:
-   - Process the message block by block, applying the hash function \( H \) iteratively to produce an intermediate hash value.
-   - For SHA-256, each block is processed through a series of logical operations, bitwise manipulations, and modular additions.
+STEP 5:
+Optionally verify the hash by recomputing it and comparing it with a received hash.
 
-5. Output:
-   - After all blocks are processed, the final hash value (digest) is produced, which is a fixed-size output (e.g., 256-bit for SHA-256).
-   - The resulting hash is unique to the input message, meaning even a small change in the message will result in a completely different hash.
+# PROGRAM:
+```C
+#include <stdio.h>
+#include <string.h>
 
-6. Security: The strength of the hash algorithm lies in its collision resistance, ensuring that it is computationally infeasible to find two different messages that produce the same hash value.
+// Function to compute a simple hash using XOR and addition
+void computeSimpleHash(const char *message, unsigned char *hash) {
+    unsigned char temp = 0;
+
+    // Simple hash computation: XOR and addition
+    for (int i = 0; message[i] != '\0'; i++) {
+        temp = temp ^ message[i];  // XOR each character
+        temp += message[i];        // Add each character's value
+    }
+    
+    // Store the result in the hash
+    *hash = temp;
+}
+
+int main() {
+    char message[256];      // Buffer for the input message
+    unsigned char hash;     // Buffer for the hash (only 1 byte for simplicity)
+    char receivedHash[3];   // Buffer for input of received hash (in hex format)
+
+    // Step 1: Input the message
+    printf("Enter the message: ");
+    scanf("%s", message);
+
+    // Step 2: Compute the simple hash
+    computeSimpleHash(message, &hash);
+
+    // Step 3: Display the computed hash in hexadecimal format
+    printf("Computed Hash (in hex): %02x\n", hash);
+
+    // Optional Step 5: Verify the hash
+    printf("Enter the received hash (in hex): ");
+    scanf("%s", receivedHash);
+
+    // Convert received hash from hex string to an unsigned char
+    unsigned int receivedHashValue;
+    sscanf(receivedHash, "%02x", &receivedHashValue);
+
+    // Compare the computed hash with the received hash
+    if (hash == receivedHashValue) {
+        printf("Hash verification successful. Message is unchanged.\n");
+    } else {
+        printf("Hash verification failed. Message has been altered.\n");
+    }
+
+    return 0;
+}
+
+```
+# OUTPUT:
+
+![Screenshot 2024-11-10 194125](https://github.com/user-attachments/assets/c879fe7e-0383-4466-9e7b-edca3c2b39a1)
 
 
-## Program:
-
-
-## Output:
-
-## Result:
-The program is executed successfully.
+# RESULT:
+The program for generating and verifying a simple hash of a given message using a custom hash function was executed successfully. The computed hash ensures basic integrity of the message.
